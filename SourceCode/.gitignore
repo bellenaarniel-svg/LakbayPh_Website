@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.npm/
+
+# Database (runtime data — don't commit real bookings/credentials)
+vanrental.db
+vanrental.db-wal
+vanrental.db-shm
+*.sqlite
+
+# Environment / secrets
+.env
+.env.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+
+# Uploads (originals kept locally; copies live in public/img)
+uploads/

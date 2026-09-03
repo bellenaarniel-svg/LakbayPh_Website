@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LakbayPH Travel & Tours — Van Rental & Booking</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand">
+      <img src="img/lakbaybanner.png" alt="LakbayPH Travel & Tours Inc." class="brand-logo" />
+      <span class="brand-name">LakbayPH <b>Travel &amp; Tours Inc.</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#fleet">Fleet</a>
+      <a href="#routes">Routes</a>
+      <a href="#book">Book Now</a>
+      <a href="#" id="adminLink" class="btn-ghost">Admin Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <img src="img/lakbaybanner.png" alt="LakbayPH Travel & Tours Inc." class="hero-banner" />
+      <span class="pill">Safe • Reliable • On-time</span>
+      <h1>Comfortable van rentals for every Philippine adventure.</h1>
+      <p>Book a private van with a professional driver in minutes. Transparent per-route pricing, instant cost estimate, and easy scheduling.</p>
+      <div class="hero-cta">
+        <a href="#book" class="btn-primary">Book a Trip</a>
+        <a href="#fleet" class="btn-outline">View Fleet</a>
+      </div>
+      <div class="hero-stats">
+        <div><b id="statVans">5</b><span>Van models</span></div>
+        <div><b id="statRoutes">10</b><span>Popular routes</span></div>
+        <div><b>24/7</b><span>Support</span></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="quick-quote">
+        <h3>Quick Price Estimate</h3>
+        <label>Route
+          <select id="qqRoute"></select>
+        </label>
+        <label>Van type
+          <select id="qqVan"></select>
+        </label>
+        <label>Trip type
+          <select id="qqType">
+            <option value="one-way">One-way</option>
+            <option value="round-trip">Round trip</option>
+          </select>
+        </label>
+        <label>Number of days
+          <select id="qqDays"></select>
+        </label>
+        <div class="qq-result">
+          <span>Estimated cost</span>
+          <b id="qqPrice">₱0</b>
+        </div>
+        <a href="#book" class="btn-primary full" id="qqBookBtn">Continue to Booking</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLEET ===== -->
+<section class="section" id="fleet">
+  <div class="container">
+    <h2 class="section-title">Our Fleet</h2>
+    <p class="section-sub">Choose the right van for your group. Prices scale with comfort and capacity.</p>
+    <div class="fleet-grid" id="fleetGrid"></div>
+  </div>
+</section>
+
+<!-- ===== ROUTES ===== -->
+<section class="section alt" id="routes">
+  <div class="container">
+    <h2 class="section-title">Popular Routes & Base Fares</h2>
+    <p class="section-sub">*Base fare is for the Nissan Urvan Standard, one-way, single day. Final cost varies by van type, trip type, and number of days (each extra day adds 50% of the base fare). Pickup from Metro Manila.</p>
+    <div class="table-wrap">
+      <table class="routes-table">
+        <thead><tr><th>Region</th><th>Destination</th><th>Approx. distance</th><th>Base fare*</th></tr></thead>
+        <tbody id="routesBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOOKING ===== -->
+<section class="section" id="book">
+  <div class="container narrow">
+    <h2 class="section-title">Book & Schedule Your Trip</h2>
+    <p class="section-sub">Fill in your details — you'll get an instant cost and a booking reference.</p>
+
+    <form id="bookForm" class="card form">
+      <div class="grid2">
+        <label>Full name *<input name="customer_name" required placeholder="Juan Dela Cruz" /></label>
+        <label>Phone / Mobile *<input name="customer_phone" required placeholder="0917 000 0000" /></label>
+      </div>
+      <label>Email (optional)<input name="customer_email" type="email" placeholder="you@email.com" /></label>
+
+      <div class="grid2">
+        <label>Route *<select name="route_id" id="bookRoute" required></select></label>
+        <label>Van type *<select name="van_id" id="bookVan" required></select></label>
+      </div>
+
+      <div class="grid3">
+        <label>Trip date *<input name="trip_date" id="bookDate" type="date" required /></label>
+        <label>Pickup time *<input name="trip_time" type="time" required /></label>
+        <label>Passengers *<input name="passengers" type="number" min="1" value="1" required /></label>
+      </div>
+
+      <div class="grid2">
+        <label>Trip type *
+          <select name="trip_type" id="bookType">
+            <option value="one-way">One-way</option>
+            <option value="round-trip">Round trip (×1.8)</option>
+          </select>
+        </label>
+        <label>Number of days *
+          <select name="days" id="bookDays"></select>
+        </label>
+      </div>
+
+      <div class="price-box big">
+        <span>Total cost <small id="priceBreakdown"></small></span>
+        <b id="bookPrice">₱0</b>
+      </div>
+
+      <label>Notes (optional)<textarea name="notes" rows="2" placeholder="Pickup address, luggage, special requests…"></textarea></label>
+
+      <button type="submit" class="btn-primary full" id="submitBtn">Confirm Booking</button>
+      <p class="form-msg" id="bookMsg"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>© <span id="year"></span> LakbayPH Travel & Tours Inc. All rights reserved.</p>
+    <p class="muted">Demo site — prices are samples and fully editable.</p>
+  </div>
+</footer>
+
+<!-- ===== SUCCESS MODAL ===== -->
+<div class="modal-backdrop" id="successModal">
+  <div class="modal">
+    <div class="success-icon">✓</div>
+    <h3>Booking Confirmed!</h3>
+    <p>Your reference number is:</p>
+    <div class="ref" id="successRef">VR-XXXX</div>
+    <div class="success-details" id="successDetails"></div>
+    <button class="btn-primary full" onclick="closeModal('successModal')">Done</button>
+  </div>
+</div>
+
+<!-- ===== DAY BOOKINGS MODAL ===== -->
+<div class="modal-backdrop" id="dayModal">
+  <div class="modal modal-wide">
+    <h3 id="dayModalTitle">Bookings</h3>
+    <div class="day-list" id="dayModalList"></div>
+    <button class="btn-outline full" onclick="closeModal('dayModal')">Close</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
+<div class="modal-backdrop" id="loginModal">
+  <div class="modal">
+    <h3>Admin Login</h3>
+    <form id="loginForm">
+      <label>Username<input name="username" required autocomplete="username" /></label>
+      <label>Password<input name="password" type="password" required autocomplete="current-password" /></label>
+      <p class="form-msg" id="loginMsg"></p>
+      <button type="submit" class="btn-primary full">Log In</button>
+      <button type="button" class="btn-outline full" onclick="closeModal('loginModal')">Cancel</button>
+    </form>
+    <p class="hint">Demo: <code>admin</code> / <code>admin123</code></p>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div class="dashboard" id="dashboard">
+  <header class="dash-header">
+    <div class="container dash-header-inner">
+      <span class="brand"><span class="brand-icon">🚐</span> Admin Dashboard</span>
+      <div class="dash-header-actions">
+        <div class="bell-wrap">
+          <button class="bell-btn" id="bellBtn" title="Booking notifications" aria-label="Notifications">
+            🔔
+            <span class="bell-badge" id="bellBadge" style="display:none">0</span>
+          </button>
+          <div class="bell-panel" id="bellPanel">
+            <div class="bell-panel-head">
+              <b>Notifications</b>
+              <button class="bell-mark" id="bellMarkRead">Mark all read</button>
+            </div>
+            <div class="bell-list" id="bellList"></div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container dash-body">
+    <!-- KPIs -->
+    <div class="kpi-row" id="kpiRow"></div>
+
+    <!-- Monthly calendar -->
+    <div class="card">
+      <div class="card-head">
+        <h3>📅 Booking Calendar</h3>
+        <div class="cal-nav">
+          <button class="cal-arrow" id="calPrev" aria-label="Previous month">‹</button>
+          <b id="calTitle">Month Year</b>
+          <button class="cal-arrow" id="calNext" aria-label="Next month">›</button>
+          <button class="btn-outline sm" id="calToday">Today</button>
+        </div>
+      </div>
+      <div class="cal-weekdays">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="calendar" id="calendarGrid"></div>
+      <div class="cal-legend">
+        <span><i class="cd pending"></i>Pending</span>
+        <span><i class="cd confirmed"></i>Confirmed</span>
+        <span><i class="cd completed"></i>Completed</span>
+        <span><i class="cd cancelled"></i>Cancelled</span>
+      </div>
+    </div>
+
+    <!-- Monthly chart -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Monthly Schedule Overview — <span id="chartYear"></span></h3>
+        <div class="legend"><span class="dot bookings"></span>Bookings <span class="dot revenue"></span>Revenue</div>
+      </div>
+      <div class="chart" id="monthChart"></div>
+    </div>
+
+    <!-- Price management -->
+    <div class="card">
+      <div class="card-head">
+        <h3>💰 Price Management</h3>
+      </div>
+      <div class="price-hike">
+        <p class="muted">Apply a company-wide price hike (or drop) to every route base fare at once.</p>
+        <div class="hike-row">
+          <label>Adjust all route fares by
+            <div class="hike-input">
+              <input type="number" id="hikePercent" placeholder="10" step="0.5" />
+              <span>%</span>
+            </div>
+          </label>
+          <button class="btn-primary sm" id="applyHikeBtn">Apply to all routes</button>
+          <span class="hike-msg" id="hikeMsg"></span>
+        </div>
+        <p class="hint">Tip: enter <code>10</code> for a 10% increase, or <code>-5</code> for a 5% discount.</p>
+      </div>
+
+      <div class="pricing-tabs">
+        <button class="ptab active" data-tab="routes">Route fares</button>
+        <button class="ptab" data-tab="vans">Van rates</button>
+      </div>
+
+      <div class="table-wrap ptab-panel" id="panelRoutes">
+        <table class="bookings-table">
+          <thead><tr><th>Region</th><th>Destination</th><th>Base fare (₱)</th><th></th></tr></thead>
+          <tbody id="priceRoutesBody"></tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap ptab-panel" id="panelVans" style="display:none">
+        <table class="bookings-table">
+          <thead><tr><th>Van</th><th>Seats</th><th>Price multiplier</th><th></th></tr></thead>
+          <tbody id="priceVansBody"></tbody>
+        </table>
+        <p class="hint" style="padding:.8rem 1rem">The multiplier scales the route fare for each van (1.0 = base rate, 1.25 = +25%).</p>
+      </div>
+    </div>
+
+    <!-- Bookings table -->
+    <div class="card">
+      <div class="card-head">
+        <h3>All Bookings</h3>
+        <div class="filters">
+          <input id="searchInput" placeholder="Search name, ref, route…" />
+          <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>Ref</th><th>Date / Time</th><th>Customer</th><th>Route</th>
+              <th>Van</th><th>Pax</th><th>Type</th><th>Days</th><th>Price</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FACEBOOK MESSENGER CHAT WIDGET ===== -->
+<div class="chat-widget" id="chatWidget">
+  <!-- Chat panel -->
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div class="chat-head-info">
+        <div class="chat-avatar">🚐</div>
+        <div>
+          <b>LakbayPH Travel &amp; Tours</b>
+          <span class="chat-status"><i></i> Typically replies within minutes</span>
+        </div>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Close chat">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg bot">
+        <span class="chat-bubble">Kumusta! 👋 Welcome to LakbayPH Travel &amp; Tours. How can we help you today?</span>
+      </div>
+      <div class="chat-quick" id="chatQuick">
+        <button class="chat-chip" data-msg="Hi! I'd like to inquire about van rental rates.">💰 Ask about rates</button>
+        <button class="chat-chip" data-msg="Hi! I'd like to check van availability for my trip.">📅 Check availability</button>
+        <button class="chat-chip" data-msg="Hi! I need help with my booking.">🧾 Help with a booking</button>
+        <button class="chat-chip" data-msg="Hi! I'd like to ask about your destinations and tours.">🏝️ Destinations &amp; tours</button>
+      </div>
+    </div>
+    <div class="chat-foot">
+      <p class="chat-foot-note">Chat with us directly on Facebook Messenger:</p>
+      <a href="#" id="chatMessengerBtn" class="chat-messenger-btn" target="_blank" rel="noopener">
+        <span class="msgr-icon">💬</span> Continue on Messenger
+      </a>
+    </div>
+  </div>
+  <!-- Floating launcher button -->
+  <button class="chat-launcher" id="chatLauncher" aria-label="Chat with us">
+    <span class="chat-launcher-icon" id="chatLauncherIcon">💬</span>
+    <span class="chat-launcher-badge" id="chatLauncherBadge">1</span>
+  </button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
