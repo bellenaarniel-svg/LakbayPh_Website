@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LakbayPH — Deploy to GitHub + Render (Step by Step)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;color:#0f172a;background:#eef2f7;line-height:1.6}
+  .wrap{max-width:860px;margin:0 auto;padding:2rem 1.2rem 4rem}
+  header.top{background:linear-gradient(135deg,#0f172a,#1e293b 60%,#334155);color:#fff;border-radius:20px;padding:2rem;margin-bottom:1.6rem;box-shadow:0 14px 40px rgba(2,6,23,.25)}
+  header.top h1{font-size:1.7rem;font-weight:800}
+  header.top p{color:#cbd5e1;margin-top:.5rem}
+  .chip{display:inline-block;background:rgba(249,115,22,.2);color:#fdba74;padding:.3rem .8rem;border-radius:999px;font-size:.8rem;font-weight:700;margin-bottom:.6rem}
+  .step{background:#fff;border-radius:18px;box-shadow:0 8px 24px rgba(2,6,23,.08);padding:1.6rem;margin-bottom:1.4rem;border:1px solid #e2e8f0}
+  .step-head{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+  .step-num{flex-shrink:0;width:42px;height:42px;border-radius:50%;background:#f97316;color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(249,115,22,.4)}
+  .step-head h2{font-size:1.25rem;font-weight:800}
+  .step p{margin-bottom:.7rem}
+  .step ul,.step ol{margin:.4rem 0 .9rem 1.3rem}
+  .step li{margin-bottom:.4rem}
+  .mock{border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;margin:1rem 0;box-shadow:0 6px 18px rgba(2,6,23,.1)}
+  .mock svg{display:block;width:100%;height:auto}
+  .cap{font-size:.82rem;color:#64748b;text-align:center;margin-top:-.4rem;margin-bottom:1rem;font-style:italic}
+  code{background:#f1f5f9;padding:.15rem .45rem;border-radius:6px;font-family:'Consolas',monospace;font-size:.92em;color:#be123c}
+  .cbox{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:.9rem 1.1rem;font-family:'Consolas',monospace;font-size:.86rem;overflow-x:auto;margin:.6rem 0}
+  .cbox .c{color:#64748b}
+  .note{border-left:5px solid #0ea5e9;background:#f0f9ff;padding:.9rem 1.1rem;border-radius:0 10px 10px 0;margin:.9rem 0;font-size:.94rem}
+  .warn{border-left:5px solid #f59e0b;background:#fffbeb;padding:.9rem 1.1rem;border-radius:0 10px 10px 0;margin:.9rem 0;font-size:.94rem}
+  .good{border-left:5px solid #16a34a;background:#f0fdf4;padding:.9rem 1.1rem;border-radius:0 10px 10px 0;margin:.9rem 0;font-size:.94rem}
+  .note b,.warn b,.good b{display:block;margin-bottom:.2rem}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;background:#e2e8f0;color:#475569;margin-left:.4rem}
+  .toc{background:#fff;border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.6rem;border:1px solid #e2e8f0}
+  .toc h3{margin-bottom:.6rem;font-size:1rem}
+  .toc ol{margin-left:1.2rem}
+  .toc a{color:#0ea5e9;text-decoration:none;font-weight:600}
+  .toc a:hover{text-decoration:underline}
+  kbd{background:#fff;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:5px;padding:.05rem .4rem;font-size:.85em;font-family:inherit;font-weight:600}
+  .foot{text-align:center;color:#64748b;font-size:.85rem;margin-top:2rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="chip">DEPLOYMENT GUIDE</span>
+  <h1>🚀 Put LakbayPH online with GitHub + Render</h1>
+  <p>A visual, click-by-click walkthrough — from your code to a live website URL you can share. Follow the numbered steps and match your screen to the pictures.</p>
+</header>
+
+<div class="toc">
+  <h3>📋 What you'll do</h3>
+  <ol>
+    <li><a href="#s0">Before you start (what you need)</a></li>
+    <li><a href="#s1">Create a GitHub account &amp; new repository</a></li>
+    <li><a href="#s2">Upload your project files the RIGHT way</a></li>
+    <li><a href="#s3">Verify the structure (the #1 cause of your error)</a></li>
+    <li><a href="#s4">Create a Render account</a></li>
+    <li><a href="#s5">Create a Web Service from your repo</a></li>
+    <li><a href="#s6">Set the build settings &amp; admin password</a></li>
+    <li><a href="#s7">Deploy &amp; get your live link</a></li>
+    <li><a href="#s8">Test it + update the site later</a></li>
+  </ol>
+</div>
+
+<!-- STEP 0 -->
+<div class="step" id="s0">
+  <div class="step-head"><div class="step-num">0</div><h2>Before you start</h2></div>
+  <p>You'll need three things — all free:</p>
+  <ul>
+    <li>✅ The project ZIP I gave you: <code>lakbayph-van-rental.zip</code> — <b>unzip it on your computer first.</b></li>
+    <li>✅ A <b>GitHub</b> account (free) — stores your code.</li>
+    <li>✅ A <b>Render</b> account (free) — runs your code as a live website.</li>
+  </ul>
+  <div class="warn"><b>⚠️ Why your earlier tries failed</b>
+    Render needs <code>package.json</code> at the very TOP of the repo. Your uploads kept putting files inside a folder, so Render couldn't find it. Step 2 &amp; 3 below fix exactly that.</div>
+</div>
+
+<!-- STEP 1 -->
+<div class="step" id="s1">
+  <div class="step-head"><div class="step-num">1</div><h2>Create a GitHub repository</h2></div>
+  <p>Go to <code>github.com/new</code> (sign up first if you don't have an account). Fill it in like this:</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="470" fill="#ffffff"/>
+      <rect width="800" height="54" fill="#24292f"/>
+      <circle cx="34" cy="27" r="12" fill="#fff"/><path d="M28 27a6 6 0 1 1 12 0 6 6 0 0 1-12 0z" fill="#24292f"/>
+      <text x="60" y="33" fill="#fff" font-family="Arial" font-size="16" font-weight="bold">GitHub</text>
+      <text x="300" y="33" fill="#c9d1d9" font-family="Arial" font-size="14">Create a new repository</text>
+      <text x="40" y="100" fill="#24292f" font-family="Arial" font-size="18" font-weight="bold">Create a new repository</text>
+      <text x="40" y="140" fill="#57606a" font-family="Arial" font-size="13">Owner *                    Repository name *</text>
+      <rect x="40" y="150" width="150" height="38" rx="7" fill="#f6f8fa" stroke="#d0d7de"/>
+      <text x="55" y="174" fill="#24292f" font-family="Arial" font-size="13">your-username</text>
+      <text x="196" y="174" fill="#57606a" font-family="Arial" font-size="18">/</text>
+      <rect x="210" y="150" width="300" height="38" rx="7" fill="#fff" stroke="#0969da" stroke-width="2"/>
+      <text x="225" y="174" fill="#24292f" font-family="Arial" font-size="13" font-weight="bold">lakbayph-van-rental</text>
+      <circle cx="560" cy="169" r="11" fill="#2da44e"/><text x="555" y="174" fill="#fff" font-family="Arial" font-size="14">✓</text>
+      <text x="580" y="174" fill="#2da44e" font-family="Arial" font-size="12">available</text>
+
+      <text x="40" y="230" fill="#24292f" font-family="Arial" font-size="14" font-weight="bold">Public</text>
+      <circle cx="30" cy="226" r="8" fill="#fff" stroke="#0969da" stroke-width="2"/><circle cx="30" cy="226" r="4" fill="#0969da"/>
+      <text x="40" y="250" fill="#57606a" font-family="Arial" font-size="12">Anyone can see this repository.</text>
+
+      <rect x="40" y="285" width="20" height="20" rx="4" fill="#fff" stroke="#d0d7de"/>
+      <text x="72" y="301" fill="#cf222e" font-family="Arial" font-size="13" font-weight="bold">✗ Do NOT check "Add a README file"</text>
+      <text x="72" y="322" fill="#57606a" font-family="Arial" font-size="12">(leave this UNticked — your ZIP already has one)</text>
+
+      <rect x="590" y="410" width="170" height="42" rx="8" fill="#2da44e"/>
+      <text x="620" y="437" fill="#fff" font-family="Arial" font-size="15" font-weight="bold">Create repository</text>
+      <text x="470" y="437" fill="#f97316" font-family="Arial" font-size="13" font-weight="bold">← click this ①</text>
+    </svg>
+  </div>
+  <p class="cap">Name it <code>lakbayph-van-rental</code>, keep it Public, leave "Add a README" UNCHECKED, then click <b>Create repository</b>.</p>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="s2">
+  <div class="step-head"><div class="step-num">2</div><h2>Upload your files the RIGHT way</h2></div>
+  <p>On the new empty repo page, click <b>“uploading an existing file”</b>.</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="250" fill="#ffffff"/>
+      <rect x="40" y="30" width="720" height="180" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+      <text x="70" y="75" fill="#24292f" font-family="Arial" font-size="15" font-weight="bold">Quick setup — if you've done this kind of thing before</text>
+      <text x="70" y="120" fill="#57606a" font-family="Arial" font-size="13">Get started by </text>
+      <text x="180" y="120" fill="#0969da" font-family="Arial" font-size="13" font-weight="bold" text-decoration="underline">uploading an existing file</text>
+      <text x="440" y="120" fill="#f97316" font-family="Arial" font-size="13" font-weight="bold">← click here ①</text>
+      <text x="70" y="160" fill="#57606a" font-family="Arial" font-size="12">…or push an existing repository from the command line.</text>
+    </svg>
+  </div>
+  <p>Now the <b>most important part.</b> Open the folder you unzipped. Select the <b>files INSIDE it</b> — not the folder itself — and drag them onto the page:</p>
+
+  <div class="mock">
+    <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="340" fill="#ffffff"/>
+      <!-- LEFT: correct -->
+      <rect x="20" y="20" width="360" height="300" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+      <text x="40" y="50" fill="#16a34a" font-family="Arial" font-size="15" font-weight="bold">✓ DO THIS — drag the files inside</text>
+      <g font-family="Consolas,monospace" font-size="13" fill="#166534">
+        <text x="50" y="90">📄 package.json</text>
+        <text x="50" y="118">📄 package-lock.json</text>
+        <text x="50" y="146">📄 server.js</text>
+        <text x="50" y="174">📄 db.js</text>
+        <text x="50" y="202">📄 render.yaml</text>
+        <text x="50" y="230">📄 README.md</text>
+        <text x="50" y="258">📁 public</text>
+      </g>
+      <text x="40" y="298" fill="#166534" font-family="Arial" font-size="11.5">Select these 7 items, drag them ALL together.</text>
+
+      <!-- RIGHT: wrong -->
+      <rect x="420" y="20" width="360" height="300" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="440" y="50" fill="#dc2626" font-family="Arial" font-size="15" font-weight="bold">✗ DON'T — drag the whole folder</text>
+      <g font-family="Consolas,monospace" font-size="13" fill="#991b1b">
+        <text x="450" y="95">📁 lakbayph-van-rental/  ⟵ folder</text>
+        <text x="475" y="123">📄 package.json</text>
+        <text x="475" y="151">📄 server.js</text>
+        <text x="475" y="179">📁 public</text>
+      </g>
+      <rect x="450" y="210" width="300" height="80" rx="8" fill="#fff" stroke="#dc2626" stroke-dasharray="4"/>
+      <text x="465" y="240" fill="#991b1b" font-family="Arial" font-size="11.5">This nests everything inside a folder →</text>
+      <text x="465" y="262" fill="#991b1b" font-family="Arial" font-size="11.5">Render can't find package.json →</text>
+      <text x="465" y="284" fill="#991b1b" font-family="Arial" font-size="11.5" font-weight="bold">the ENOENT error you kept getting.</text>
+    </svg>
+  </div>
+  <p class="cap">Drag the <b>contents</b> (left), never the containing folder (right). This is what caused your repeated error.</p>
+
+  <p>Scroll down, type a message like <code>Initial commit</code>, and click <b>Commit changes</b>:</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="200" fill="#ffffff"/>
+      <rect x="40" y="30" width="720" height="60" rx="8" fill="#fff" stroke="#d0d7de"/>
+      <text x="55" y="55" fill="#24292f" font-family="Arial" font-size="13" font-weight="bold">Initial commit</text>
+      <text x="55" y="78" fill="#8b949e" font-family="Arial" font-size="12">Add an optional extended description…</text>
+      <rect x="40" y="120" width="200" height="44" rx="8" fill="#2da44e"/>
+      <text x="78" y="148" fill="#fff" font-family="Arial" font-size="15" font-weight="bold">Commit changes</text>
+      <text x="260" y="148" fill="#f97316" font-family="Arial" font-size="13" font-weight="bold">← click ②</text>
+    </svg>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="s3">
+  <div class="step-head"><div class="step-num">3</div><h2>Verify the structure ✅ (30-second check)</h2></div>
+  <p>After committing, look at your repo's main page. You <b>must</b> see <code>package.json</code> and <code>server.js</code> listed directly — <b>not</b> inside a folder:</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="320" fill="#ffffff"/>
+      <rect width="800" height="46" fill="#24292f"/>
+      <text x="30" y="30" fill="#fff" font-family="Arial" font-size="15" font-weight="bold">📦 your-username / lakbayph-van-rental</text>
+      <rect x="30" y="70" width="740" height="230" rx="10" fill="#fff" stroke="#d0d7de"/>
+      <rect x="30" y="70" width="740" height="40" rx="10" fill="#f6f8fa"/>
+      <text x="50" y="95" fill="#57606a" font-family="Arial" font-size="12">Latest commit: Initial commit</text>
+      <g font-family="Arial" font-size="13.5" fill="#24292f">
+        <text x="55" y="140">📁 public</text>
+        <text x="55" y="172">📄 .gitignore</text>
+        <text x="55" y="204">📄 README.md</text>
+        <text x="55" y="236">📄 db.js</text>
+        <text x="55" y="268">📄 package.json</text>
+        <text x="420" y="140">📄 package-lock.json</text>
+        <text x="420" y="172">📄 render.yaml</text>
+        <text x="420" y="204">📄 server.js</text>
+      </g>
+      <rect x="405" y="252" width="240" height="30" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="418" y="272" fill="#166534" font-family="Arial" font-size="12" font-weight="bold">✓ package.json is at the top!</text>
+    </svg>
+  </div>
+  <div class="good"><b>✓ If you see this, you're golden.</b> If instead you see one folder (like <code>lakbayph-van-rental/</code>) containing everything, delete the repo and redo Step 2 — this time dragging the files <i>inside</i> the folder.</div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="s4">
+  <div class="step-head"><div class="step-num">4</div><h2>Create a Render account</h2></div>
+  <p>Go to <code>render.com</code> → <b>Get Started</b> → <b>“Sign in with GitHub”</b>. This lets Render see your repositories.</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 230" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="230" fill="#f8fafc"/>
+      <rect x="250" y="40" width="300" height="150" rx="14" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+      <text x="400" y="80" fill="#0f172a" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle">Welcome to Render</text>
+      <rect x="285" y="105" width="230" height="44" rx="8" fill="#24292f"/>
+      <text x="400" y="132" fill="#fff" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">🐙 Sign in with GitHub</text>
+      <text x="400" y="172" fill="#f97316" font-family="Arial" font-size="13" font-weight="bold" text-anchor="middle">↑ click this ①</text>
+    </svg>
+  </div>
+  <p>Approve the GitHub authorization when it asks. You'll land on the Render dashboard.</p>
+</div>
+
+<!-- STEP 5 -->
+<div class="step" id="s5">
+  <div class="step-head"><div class="step-num">5</div><h2>Create a Web Service from your repo</h2></div>
+  <p>On the Render dashboard, click <b>New +</b> (top right) → <b>Web Service</b>.</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="250" fill="#f8fafc"/>
+      <rect x="560" y="20" width="120" height="40" rx="8" fill="#6d28d9"/>
+      <text x="620" y="45" fill="#fff" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">New +</text>
+      <text x="690" y="45" fill="#f97316" font-family="Arial" font-size="12" font-weight="bold">← ①</text>
+      <rect x="540" y="66" width="200" height="150" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+      <rect x="550" y="76" width="180" height="34" rx="6" fill="#ede9fe"/>
+      <text x="565" y="98" fill="#6d28d9" font-family="Arial" font-size="13" font-weight="bold">🌐 Web Service</text>
+      <text x="600" y="98" fill="#f97316" font-family="Arial" font-size="11" font-weight="bold"></text>
+      <text x="565" y="138" fill="#475569" font-family="Arial" font-size="12">📦 Static Site</text>
+      <text x="565" y="168" fill="#475569" font-family="Arial" font-size="12">🗄️ PostgreSQL</text>
+      <text x="565" y="198" fill="#475569" font-family="Arial" font-size="12">⚙️ Background Worker</text>
+      <text x="748" y="98" fill="#f97316" font-family="Arial" font-size="11" font-weight="bold">②</text>
+    </svg>
+  </div>
+  <p>Find <code>lakbayph-van-rental</code> in the list and click <b>Connect</b>.</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="160" fill="#f8fafc"/>
+      <rect x="40" y="40" width="720" height="80" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+      <text x="70" y="75" fill="#0f172a" font-family="Arial" font-size="15" font-weight="bold">📦 your-username / lakbayph-van-rental</text>
+      <text x="70" y="100" fill="#64748b" font-family="Arial" font-size="12">Updated just now</text>
+      <rect x="620" y="62" width="110" height="38" rx="8" fill="#6d28d9"/>
+      <text x="675" y="86" fill="#fff" font-family="Arial" font-size="13" font-weight="bold" text-anchor="middle">Connect</text>
+      <text x="675" y="132" fill="#f97316" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">↑ click ③</text>
+    </svg>
+  </div>
+  <div class="note"><b>💡 Bonus: it may auto-configure</b>
+    Because I included a <code>render.yaml</code>, Render might detect a "Blueprint" and fill in the settings automatically. If it offers that, accept it — then just add the two environment variables in Step 6.</div>
+</div>
+
+<!-- STEP 6 -->
+<div class="step" id="s6">
+  <div class="step-head"><div class="step-num">6</div><h2>Settings &amp; admin password</h2></div>
+  <p>Fill the form exactly like this (most will already be correct):</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="430" fill="#ffffff"/>
+      <g font-family="Arial">
+        <text x="40" y="45" fill="#0f172a" font-size="16" font-weight="bold">Configure your Web Service</text>
+
+        <text x="40" y="85" fill="#475569" font-size="12" font-weight="bold">Name</text>
+        <rect x="40" y="94" width="320" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="52" y="116" fill="#0f172a" font-size="13">lakbayph-van-rental</text>
+
+        <text x="400" y="85" fill="#475569" font-size="12" font-weight="bold">Region</text>
+        <rect x="400" y="94" width="320" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="412" y="116" fill="#0f172a" font-size="13">Singapore (closest to PH)</text>
+
+        <text x="40" y="162" fill="#475569" font-size="12" font-weight="bold">Root Directory</text>
+        <rect x="40" y="171" width="320" height="34" rx="7" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+        <text x="52" y="193" fill="#94a3b8" font-size="12" font-style="italic">(leave BLANK)</text>
+        <text x="372" y="193" fill="#16a34a" font-size="11" font-weight="bold">✓ empty</text>
+
+        <text x="400" y="162" fill="#475569" font-size="12" font-weight="bold">Runtime</text>
+        <rect x="400" y="171" width="320" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="412" y="193" fill="#0f172a" font-size="13">Node</text>
+
+        <text x="40" y="240" fill="#475569" font-size="12" font-weight="bold">Build Command</text>
+        <rect x="40" y="249" width="680" height="34" rx="7" fill="#fff" stroke="#0ea5e9" stroke-width="2"/>
+        <text x="52" y="271" fill="#0f172a" font-size="13" font-family="Consolas,monospace">npm install</text>
+
+        <text x="40" y="315" fill="#475569" font-size="12" font-weight="bold">Start Command</text>
+        <rect x="40" y="324" width="680" height="34" rx="7" fill="#fff" stroke="#0ea5e9" stroke-width="2"/>
+        <text x="52" y="346" fill="#0f172a" font-size="13" font-family="Consolas,monospace">npm start</text>
+
+        <text x="40" y="392" fill="#475569" font-size="12" font-weight="bold">Instance Type</text>
+        <rect x="40" y="401" width="200" height="30" rx="7" fill="#f0fdf4" stroke="#16a34a"/>
+        <text x="52" y="422" fill="#166534" font-size="12" font-weight="bold">Free  $0/month</text>
+      </g>
+    </svg>
+  </div>
+  <p>Scroll to <b>Environment Variables</b> → <b>Add Environment Variable</b>, and add these two so your admin login is secure:</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 190" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="190" fill="#ffffff"/>
+      <text x="40" y="35" fill="#0f172a" font-family="Arial" font-size="14" font-weight="bold">Environment Variables</text>
+      <rect x="40" y="50" width="330" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="52" y="72" fill="#0f172a" font-family="Consolas,monospace" font-size="13">ADMIN_USER</text>
+      <rect x="385" y="50" width="335" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="397" y="72" fill="#0f172a" font-family="Consolas,monospace" font-size="13">your-admin-name</text>
+
+      <rect x="40" y="98" width="330" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="52" y="120" fill="#0f172a" font-family="Consolas,monospace" font-size="13">ADMIN_PASS</text>
+      <rect x="385" y="98" width="335" height="34" rx="7" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="397" y="120" fill="#0f172a" font-family="Consolas,monospace" font-size="13">a-strong-password-123!</text>
+
+      <text x="40" y="165" fill="#64748b" font-family="Arial" font-size="12">These replace the default admin / admin123. Pick a strong password!</text>
+    </svg>
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="step" id="s7">
+  <div class="step-head"><div class="step-num">7</div><h2>Deploy &amp; get your live link</h2></div>
+  <p>Click the big <b>Deploy Web Service</b> button at the bottom. Render will show a live log. Wait for the green success lines (~2–4 minutes):</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="220" fill="#0f172a"/>
+      <g font-family="Consolas,monospace" font-size="12.5">
+        <text x="25" y="40" fill="#94a3b8">==> Cloning from GitHub…</text>
+        <text x="25" y="66" fill="#94a3b8">==> Running build command 'npm install'…</text>
+        <text x="25" y="92" fill="#94a3b8">    added 104 packages in 6s</text>
+        <text x="25" y="118" fill="#22c55e">==> Build successful 🎉</text>
+        <text x="25" y="144" fill="#94a3b8">==> Running 'npm start'</text>
+        <text x="25" y="170" fill="#e2e8f0">    Van rental server running on http://0.0.0.0:3000</text>
+        <text x="25" y="196" fill="#22c55e">==> Your service is live 🎉</text>
+      </g>
+    </svg>
+  </div>
+  <p>At the top of the page you'll see your live URL:</p>
+  <div class="mock">
+    <svg viewBox="0 0 800 110" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="110" fill="#f8fafc"/>
+      <text x="40" y="45" fill="#0f172a" font-family="Arial" font-size="16" font-weight="bold">lakbayph-van-rental</text>
+      <rect x="40" y="60" width="360" height="34" rx="17" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="60" y="82" fill="#166534" font-family="Consolas,monospace" font-size="13">https://lakbayph-van-rental.onrender.com</text>
+      <text x="430" y="82" fill="#f97316" font-family="Arial" font-size="13" font-weight="bold">← your live website! 🎉</text>
+    </svg>
+  </div>
+  <div class="good"><b>🎉 That's your live site!</b> Share that link with customers. The booking form, admin dashboard, calendar, and Messenger chat all work here (unlike GitHub Pages).</div>
+</div>
+
+<!-- STEP 8 -->
+<div class="step" id="s8">
+  <div class="step-head"><div class="step-num">8</div><h2>Test it + how to update later</h2></div>
+  <p><b>Test:</b> open your <code>.onrender.com</code> link →</p>
+  <ul>
+    <li>Make a test booking on the main page.</li>
+    <li>Click <b>Admin Login</b> → use the <code>ADMIN_USER</code> / <code>ADMIN_PASS</code> you set → check the booking appears in the dashboard.</li>
+    <li>Click the 💬 chat bubble → <b>Continue on Messenger</b> → confirms it opens your Facebook page.</li>
+  </ul>
+  <p><b>To update the site later:</b> just edit the files on GitHub (or re-upload). Every time GitHub changes, Render <b>auto-redeploys</b> within a couple minutes. No extra steps.</p>
+  <div class="warn"><b>💤 Free plan note</b>
+    Render's free service "sleeps" after ~15 minutes of no visitors, so the first visit after idle takes ~30–50 seconds to wake up. Upgrading to a paid instance (or pinging it) keeps it always-on. Your database is on a persistent disk (set by <code>render.yaml</code>), so bookings are saved.</div>
+</div>
+
+<div class="foot">
+  Made for LakbayPH Travel &amp; Tours Inc. · Keep this file — reopen anytime you redeploy.
+</div>
+
+</div>
+</body>
+</html>
